@@ -63,26 +63,26 @@ export class ContractService {
   // InvoiceNFT methods
   async getInvoiceDetails(tokenId: number) {
     if (!this.invoiceNFT) throw new Error('InvoiceNFT contract not initialized');
-    return await this.invoiceNFT.getInvoiceDetails(tokenId);
+    return await this.invoiceNFT.getFunction('getInvoiceDetails')(tokenId);
   }
 
   async createInvoice(buyer: string, amount: bigint, dueDate: bigint, metadataURI: string) {
     if (!this.invoiceNFT || !this.signer) 
       throw new Error('InvoiceNFT contract not initialized or signer not available');
     
-    const tx = await this.invoiceNFT.createInvoice(buyer, amount, dueDate, metadataURI);
+    const tx = await this.invoiceNFT.getFunction('createInvoice')(buyer, amount, dueDate, metadataURI);
     return await tx.wait();
   }
 
   // DIDRegistry methods
   async isDIDRegistered(did: string) {
     if (!this.didRegistry) throw new Error('DIDRegistry contract not initialized');
-    return await this.didRegistry.isDIDRegistered(did);
+    return await this.didRegistry.getFunction('isDIDRegistered')(did);
   }
 
   // RepaymentManager methods
   async getRepaymentStatus(tokenId: number) {
     if (!this.repaymentManager) throw new Error('RepaymentManager contract not initialized');
-    return await this.repaymentManager.getInvoiceRepaymentStatus(tokenId);
+    return await this.repaymentManager.getFunction('getInvoiceRepaymentStatus')(tokenId);
   }
 } 

@@ -4,7 +4,6 @@ import "@typechain/hardhat";
 import "@nomicfoundation/hardhat-ethers";
 import "hardhat-gas-reporter";
 import "solidity-coverage";
-import "@rsksmart/hardhat-truffle5";
 
 const config: HardhatUserConfig = {
   solidity: {

@@ -51,15 +51,19 @@ export function Web3Provider({ children }: Web3ProviderProps) {
 
   // Expected network IDs for RSK
   const RSK_NETWORK_IDS = {
-    mainnet: 30,
-    testnet: 31,
+    mainnet: BigInt(30),
+    testnet: BigInt(31),
   };
 
   // Check if window.ethereum is available on mount
   useEffect(() => {
     if (typeof window !== 'undefined' && window.ethereum) {
-      const provider = new BrowserProvider(window.ethereum);
-      setProvider(provider);
+      try {
+        const provider = new BrowserProvider(window.ethereum);
+        setProvider(provider);
+      } catch (error) {
+        console.error('Error initializing provider:', error);
+      }
     }
   }, []);
 
@@ -73,11 +77,15 @@ export function Web3Provider({ children }: Web3ProviderProps) {
         } else if (accounts[0] !== address) {
           // User has switched accounts
           if (provider) {
-            const signer = await provider.getSigner();
-            const address = await signer.getAddress();
-            
-            setAddress(address);
-            setSigner(signer);
+            try {
+              const signer = await provider.getSigner();
+              const address = await signer.getAddress();
+              
+              setAddress(address);
+              setSigner(signer);
+            } catch (error) {
+              console.error('Error getting signer:', error);
+            }
           }
         }
       };
@@ -129,8 +137,8 @@ export function Web3Provider({ children }: Web3ProviderProps) {
       
       // Check if we're on an RSK network
       setIsRSKNetwork(
-        Number(network.chainId) === RSK_NETWORK_IDS.mainnet || 
-        Number(network.chainId) === RSK_NETWORK_IDS.testnet
+        network.chainId === RSK_NETWORK_IDS.mainnet || 
+        network.chainId === RSK_NETWORK_IDS.testnet
       );
 
       // If not on RSK network, suggest adding or switching to it
