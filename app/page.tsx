@@ -27,7 +27,7 @@ export default function Home() {
                   href="/merchant/dashboard"
                   className="bg-white hover:bg-gray-100 text-blue-600 font-semibold py-3 px-6 rounded-lg border border-blue-600 text-center"
                 >
-                  Merchant Dashboard
+                  Dashboard
                 </Link>
               </div>
             </div>
